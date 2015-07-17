@@ -7,7 +7,7 @@ using BotBits.Events;
 
 namespace Bombot.Scanner
 {
-    public sealed class MapScanner : EventListenerPackage<MapScanner>
+    public sealed class MapManager : EventListenerPackage<MapManager>
     {
         /// <summary>
         /// Gets the map spots.
@@ -23,7 +23,7 @@ namespace Bombot.Scanner
 
         private bool waitingForResponse = false;
 
-        public MapScanner()
+        public MapManager()
         {
             MapSpots = new List<MapSpot>();
         }

@@ -2,7 +2,7 @@
 
 namespace Bombot.Scanner
 {
-    public sealed class MapScannerExtension : Extension<MapScannerExtension>
+    public sealed class MapManagerExtension : Extension<MapManagerExtension>
     {
         public static void LoadInto(BotBitsClient client)
         {

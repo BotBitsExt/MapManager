@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bombot.Scanner
 {
+    /// <summary>
+    /// Review result.
+    /// </summary>
     public enum ReviewResult
     {
         Accepted,

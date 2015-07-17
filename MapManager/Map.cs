@@ -2,9 +2,21 @@
 
 namespace Bombot.Scanner
 {
+    /// <summary>
+    /// Map class.
+    /// </summary>
     public class Map
     {
+        /// <summary>
+        /// Gets the name of the map.
+        /// </summary>
+        /// <value>The name of the map.</value>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the creators of the map.
+        /// </summary>
+        /// <value>The creators of the map.</value>
         public string Creators { get; private set; }
 
         private BackgroundBlock[,] background;
@@ -41,6 +53,11 @@ namespace Bombot.Scanner
             }
         }
 
+        /// <summary>
+        /// Builds the map at specified target.
+        /// </summary>
+        /// <param name="blocks">Blocks.</param>
+        /// <param name="target">Target.</param>
         public void BuildAt(Blocks blocks, Point target)
         {
             for (var x = 0; x < 22; x++)

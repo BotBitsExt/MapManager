@@ -42,12 +42,12 @@
     <Compile Include="Events\ScanRequestEvent.cs" />
     <Compile Include="Events\ScanResultEvent.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="MapScanner.cs" />
-    <Compile Include="MapScannerExtension.cs" />
     <Compile Include="MapSpot.cs" />
     <Compile Include="ReviewResult.cs" />
     <Compile Include="SignData.cs" />
     <Compile Include="ScanFailedException.cs" />
+    <Compile Include="MapManager.cs" />
+    <Compile Include="MapManagerExtension.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
