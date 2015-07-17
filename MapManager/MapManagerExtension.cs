@@ -1,6 +1,6 @@
 ﻿using BotBits;
 
-namespace Bombot.Scanner
+namespace MapManager
 {
     public sealed class MapManagerExtension : Extension<MapManagerExtension>
     {

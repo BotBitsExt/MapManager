@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BotBits;
+﻿using BotBits;
 
-namespace Bombot.Scanner.Events
+namespace MapManager.Events
 {
     /// <summary>
     /// Map for review event.

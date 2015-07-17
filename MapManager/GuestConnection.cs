@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using BotBits;
 using BotBits.Events;
 
-namespace Bombot.Scanner
+namespace MapManager
 {
     /// <summary>
     /// The guest connection.

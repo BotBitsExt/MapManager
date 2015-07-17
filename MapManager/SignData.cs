@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bombot.Scanner
+namespace MapManager
 {
     public class SignData
     {

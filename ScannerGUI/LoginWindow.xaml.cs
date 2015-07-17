@@ -1,9 +1,9 @@
-﻿using BotBits;
-using BotBits.Events;
-using System.Windows;
-using Bombot.Scanner;
-using Bombot.Scanner.Events;
+﻿using System.Windows;
 using PlayerIOClient;
+using BotBits;
+using BotBits.Events;
+using MapManager;
+using MapManager.Events;
 
 namespace ScannerGUI
 {
@@ -24,7 +24,7 @@ namespace ScannerGUI
             passwordBox.Password = Properties.Settings.Default.Password;
             worldIdBox.Text = Properties.Settings.Default.WorldID;
 
-            MapScannerExtension.LoadInto(client);
+            MapManagerExtension.LoadInto(client);
         }
 
         private async void OnLogin(object sender, RoutedEventArgs e)

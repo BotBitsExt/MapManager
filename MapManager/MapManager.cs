@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Bombot.Scanner.Events;
 using BotBits;
 using BotBits.Events;
+using MapManager.Events;
 
-namespace Bombot.Scanner
+namespace MapManager
 {
     public sealed class MapManager : EventListenerPackage<MapManager>
     {

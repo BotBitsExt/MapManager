@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bombot.Scanner
+namespace MapManager
 {
     /// <summary>
     /// Scan failed exception.

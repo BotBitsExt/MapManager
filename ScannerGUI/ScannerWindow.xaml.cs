@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using BotBits;
-using Bombot.Scanner;
-using Bombot.Scanner.Events;
+using MapManager;
+using MapManager.Events;
 
 namespace ScannerGUI
 {

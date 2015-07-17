@@ -1,6 +1,6 @@
 ﻿using BotBits;
 
-namespace Bombot.Scanner.Events
+namespace MapManager.Events
 {
     /// <summary>
     /// Map reviewed event.

@@ -1,7 +1,7 @@
 ﻿using System;
 using BotBits;
 
-namespace Bombot.Scanner
+namespace MapManager
 {
     /// <summary>
     /// Spot for the map design.
