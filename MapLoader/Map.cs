@@ -1,6 +1,6 @@
 ﻿using BotBits;
 
-namespace MapManager
+namespace MapLoader
 {
     /// <summary>
     /// Map class.

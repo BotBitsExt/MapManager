@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MapManager
+namespace MapLoader
 {
     public class SignData
     {

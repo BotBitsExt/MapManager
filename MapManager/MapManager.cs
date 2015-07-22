@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using BotBits;
 using BotBits.Events;
 using MapManager.Events;
+using MapLoader;
+using MapLoader.Readers;
 
 namespace MapManager
 {
@@ -55,12 +57,9 @@ namespace MapManager
 
             try
             {
-                using (var guest = new GuestConnection())
-                {
-                    maps = await guest.ScanMapsFrom(e.TargetWorldId);
-                }
+                maps = await new MapScanner().LoadMapsAsync(e.TargetWorldId);
             }
-            catch (ScanFailedException ex)
+            catch (MapLoadException ex)
             {
                 new ScanResultEvent(false, ex.Message).RaiseIn(BotBits);
                 return;

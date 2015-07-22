@@ -1,7 +1,7 @@
 ﻿using System;
 using BotBits;
 
-namespace MapManager
+namespace MapLoader
 {
     /// <summary>
     /// Spot for the map design.
@@ -41,7 +41,7 @@ namespace MapManager
             get { return Map != null; }
         }
 
-        internal MapSpot(int id, Blocks blocks)
+        public MapSpot(int id, Blocks blocks)
         {
             Id = id;
 
@@ -58,7 +58,7 @@ namespace MapManager
             Map = new Map(blocks, StartPoint, name, creators);
         }
 
-        internal void AddMap(Blocks blocks, Map map)
+        public void AddMap(Blocks blocks, Map map)
         {
             Map = map;
 
@@ -67,7 +67,7 @@ namespace MapManager
             blocks.Place(SignPoint.X, SignPoint.Y, Foreground.Sign.Block, text);
         }
 
-        internal void Clear(Blocks blocks)
+        public void Clear(Blocks blocks)
         {
             Map = null;
 
@@ -83,7 +83,7 @@ namespace MapManager
             blocks.Place(SignPoint.X, SignPoint.Y, Foreground.Empty);
         }
 
-        internal void BuildBorder(Blocks blocks)
+        public void BuildBorder(Blocks blocks)
         {
             var startX = StartPoint.X - 2;
             var startY = StartPoint.Y - 4;
