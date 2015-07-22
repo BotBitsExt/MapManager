@@ -13,6 +13,15 @@ namespace MapLoader.Readers
     {
         protected BotBitsClient BotBits;
 
+        protected int MapWidth { get; private set; }
+        protected int MapHeight { get; private set; }
+
+        public MapReaderBase(int mapWidth, int mapHeight)
+        {
+            MapWidth = mapWidth;
+            MapHeight = mapHeight;
+        }
+
         /// <summary>
         /// The connect result.
         /// Set after bot connects.

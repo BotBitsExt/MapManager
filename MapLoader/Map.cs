@@ -19,32 +19,30 @@ namespace MapLoader
         /// <value>The creators of the map.</value>
         public string Creators { get; private set; }
 
+        public Rectangle Rect { get; private set; }
+
         private BackgroundBlock[,] background;
         private ForegroundBlock[,] foreground;
 
-        public Map(Blocks source, Point startPoint, string name, string creators)
-            : this(source, startPoint.X, startPoint.Y, name, creators)
-        {
-        }
-
-        public Map(Blocks source, int x, int y, string name, string creators)
+        public Map(Blocks source, Rectangle rect, string name, string creators)
         {
             Name = name;
             Creators = creators;
+            Rect = rect;
 
-            ReadFrom(source, x, y);
+            ReadFrom(source, rect.X, rect.Y);
 
             RemoveIllegalBlocks();
         }
 
         private void ReadFrom(Blocks source, int startX, int startY)
         {
-            background = new BackgroundBlock[22, 11];
-            foreground = new ForegroundBlock[22, 11];
+            background = new BackgroundBlock[Rect.Width, Rect.Height];
+            foreground = new ForegroundBlock[Rect.Width, Rect.Height];
 
-            for (var x = 0; x < 22; x++)
+            for (var x = 0; x < Rect.Width; x++)
             {
-                for (var y = 0; y < 11; y++)
+                for (var y = 0; y < Rect.Height; y++)
                 {
                     var block = source.At(startX + x, startY + y);
                     background[x, y] = block.Background.Block;
@@ -60,9 +58,9 @@ namespace MapLoader
         /// <param name="target">Target.</param>
         public void BuildAt(Blocks blocks, Point target)
         {
-            for (var x = 0; x < 22; x++)
+            for (var x = 0; x < Rect.Width; x++)
             {
-                for (var y = 0; y < 11; y++)
+                for (var y = 0; y < Rect.Height; y++)
                 {
                     blocks.Place(target.X + x, target.Y + y, background[x, y]);
                     blocks.Place(target.X + x, target.Y + y, foreground[x, y]);
@@ -72,9 +70,9 @@ namespace MapLoader
 
         private void RemoveIllegalBlocks()
         {
-            for (var x = 0; x < 22; x++)
+            for (var x = 0; x < Rect.Width; x++)
             {
-                for (var y = 0; y < 11; y++)
+                for (var y = 0; y < Rect.Height; y++)
                 {
                     switch (foreground[x, y].Type)
                     {

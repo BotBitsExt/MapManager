@@ -8,21 +8,26 @@ namespace MapLoader.Readers
     /// </summary>
     public class MapScanner : MapReaderBase
     {
+        public MapScanner(int mapWidth, int mapHeight)
+            : base(mapWidth, mapHeight)
+        {
+        }
+
         protected override List<Map> OnLoadMaps()
         {
             var maps = new List<Map>();
             var blocks = Blocks.Of(BotBits);
 
-            for (var x = 1; x < blocks.Width - 22; x++)
+            for (var x = 1; x < blocks.Width - MapWidth; x++)
             {
-                for (var y = 1; y < blocks.Height - 11; y++)
+                for (var y = 1; y < blocks.Height - MapHeight; y++)
                 {
                     var block = blocks.At(x, y).Foreground.Block;
 
                     if (block.Type != ForegroundType.Text || !block.Text.ToLower().StartsWith("scan:")) continue;
                     var data = new SignData(block.Text.Substring(5).Trim(), Room.Of(BotBits).Owner);
 
-                    maps.Add(new Map(blocks, x, y, data.Name, data.Creators));
+                    maps.Add(new Map(blocks, new Rectangle(x, y, MapWidth, MapHeight), data.Name, data.Creators));
                 }
             }
 

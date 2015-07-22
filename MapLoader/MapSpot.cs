@@ -41,21 +41,35 @@ namespace MapLoader
             get { return Map != null; }
         }
 
-        public MapSpot(int id, Blocks blocks)
+        /// <summary>
+        /// Gets the width.
+        /// </summary>
+        /// <value>The width.</value>
+        public int Width { get; private set; }
+
+        /// <summary>
+        /// Gets the height.
+        /// </summary>
+        /// <value>The height.</value>
+        public int Height { get; private set; }
+
+        public MapSpot(int id, Blocks blocks, int width, int height)
         {
             Id = id;
+            Width = width;
+            Height = height;
 
-            var x = 26*(id%11);
-            var y = 17*(id/11);
-            StartPoint = new Point(x + 3, y + 5);
-            SignPoint = new Point(x + 13, y + 3);
+            var x = (width + 4) * (id % height);
+            var y = (height + 5) * (id / height);
+            StartPoint = new Point(x + 4, y + 5);
+            SignPoint = new Point(x + ((width + 4) / 2), y + 3);
 
             var block = blocks.At(SignPoint).Foreground.Block;
             if (block.Type != ForegroundType.Text) return;
             var split = block.Text.Split(new[] {"\\n"}, StringSplitOptions.None);
             var name = split[0];
             var creators = split[2];
-            Map = new Map(blocks, StartPoint, name, creators);
+            Map = new Map(blocks, new Rectangle(StartPoint, new Point(StartPoint.X + width, StartPoint.Y + height)), name, creators);
         }
 
         public void AddMap(Blocks blocks, Map map)
@@ -71,9 +85,9 @@ namespace MapLoader
         {
             Map = null;
 
-            for (var x = 0; x < 22; x++)
+            for (var x = 0; x < Width; x++)
             {
-                for (var y = 0; y < 11; y++)
+                for (var y = 0; y < Height; y++)
                 {
                     blocks.Place(StartPoint.X + x, StartPoint.Y + y, Background.Empty);
                     blocks.Place(StartPoint.X + x, StartPoint.Y + y, Foreground.Empty);
@@ -91,31 +105,31 @@ namespace MapLoader
             Action<int, int, Foreground.Id> placeBlock
                 = (x, y, block) => blocks.Place(startX + x, startY + y, block);
 
-            for (var y = 0; y < 17; y++)
+            for (var y = 0; y < (Height + 5); y++)
             {
-                for (var x = 0; x < 26; x++)
+                for (var x = 0; x < (Width + 4); x++)
                 {
-                    if (y == 0 || y == 1 || y == 16)
+                    if (y == 0 || y == 1)
                     {
                         placeBlock(x, y, Foreground.Gravity.InvisibleDot);
                     }
                     else if (y == 2)
                     {
-                        if (x < 2 || x > 23)
+                        if (x < 2 || x > Width + 2)
                             placeBlock(x, y, Foreground.Gravity.InvisibleDot);
                     }
-                    else if (y == 3 || y == 15)
+                    else if (y == 3 || y == Height + 4)
                     {
-                        if (x == 0 || x == 25)
+                        if (x == 0 || x == Width + 3)
                             placeBlock(x, y, Foreground.Gravity.InvisibleDot);
                         else
                             placeBlock(x, y, Foreground.Basic.Black);
                     }
-                    else if (y > 3 && y < 15)
+                    else if (y > 3 && y < Height + 4)
                     {
-                        if (x == 0 || x == 25)
+                        if (x == 0 || x == Width + 3)
                             placeBlock(x, y, Foreground.Gravity.InvisibleDot);
-                        else if (x == 1 || x == 24)
+                        else if (x == 1 || x == Width + 2)
                             placeBlock(x, y, Foreground.Basic.Black);
                     }
                 }

@@ -30,13 +30,16 @@ namespace MapManager
             MapSpots = new List<MapSpot>();
         }
 
+        public int MapWidth { get; set; }
+        public int MapHeight { get; set; }
+
         [EventListener]
         private void OnInit(InitEvent e)
         {
             var blocks = Blocks.Of(BotBits);
             for (var i = 0; i < 187; i++)
             {
-                MapSpots.Add(new MapSpot(i, blocks));
+                MapSpots.Add(new MapSpot(i, blocks, MapWidth, MapHeight));
             }
 
             new InitializationCompleteEvent().RaiseIn(BotBits);
@@ -57,7 +60,7 @@ namespace MapManager
 
             try
             {
-                maps = await new MapScanner().LoadMapsAsync(e.TargetWorldId);
+                maps = await new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId);
             }
             catch (MapLoadException ex)
             {

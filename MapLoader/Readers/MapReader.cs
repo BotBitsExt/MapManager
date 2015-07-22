@@ -11,13 +11,21 @@ namespace MapLoader
     /// </summary>
     public class MapReader : MapReaderBase
     {
+        public MapReader(int mapWidth, int mapHeight)
+            : base(mapWidth, mapHeight)
+        {
+        }
+
         protected override List<Map> OnLoadMaps()
         {
             var spots = new List<MapSpot>();
             var blocks = Blocks.Of(BotBits);
 
-            for (var i = 0; i < 187; i++)
-                spots.Add(new MapSpot(i, blocks));
+            //var numberOfSpots = (blocks.Width / (MapWidth + 4)) * (blocks.Height / (MapHeight + 5));
+            var numberOfSpots = 5;
+
+            for (var i = 0; i < numberOfSpots; i++)
+                spots.Add(new MapSpot(i, blocks, MapWidth, MapHeight));
 
             return spots
                 .Where(spot => spot.HasMap)
