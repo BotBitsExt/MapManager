@@ -59,8 +59,9 @@ namespace MapLoader
             Width = width;
             Height = height;
 
-            var x = (width + 4) * (id % height);
-            var y = (height + 5) * (id / height);
+            var maxId = blocks.Width / (width + 4);
+            var x = (width + 4) * (id % maxId);
+            var y = (height + 5) * (id / maxId);
             StartPoint = new Point(x + 4, y + 5);
             SignPoint = new Point(x + ((width + 4) / 2), y + 3);
 

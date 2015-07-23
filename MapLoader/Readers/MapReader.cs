@@ -21,8 +21,7 @@ namespace MapLoader
             var spots = new List<MapSpot>();
             var blocks = Blocks.Of(BotBits);
 
-            //var numberOfSpots = (blocks.Width / (MapWidth + 4)) * (blocks.Height / (MapHeight + 5));
-            var numberOfSpots = 5;
+            var numberOfSpots = (blocks.Width / (MapWidth + 4)) * (blocks.Height / (MapHeight + 5));
 
             for (var i = 0; i < numberOfSpots; i++)
                 spots.Add(new MapSpot(i, blocks, MapWidth, MapHeight));

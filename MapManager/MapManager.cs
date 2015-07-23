@@ -37,7 +37,10 @@ namespace MapManager
         private void OnInit(InitEvent e)
         {
             var blocks = Blocks.Of(BotBits);
-            for (var i = 0; i < 5; i++)
+
+            var numberOfSpots = (blocks.Width / (MapWidth + 4)) * (blocks.Height / (MapHeight + 5));
+
+            for (var i = 0; i < numberOfSpots; i++)
             {
                 MapSpots.Add(new MapSpot(i, blocks, MapWidth, MapHeight));
             }
