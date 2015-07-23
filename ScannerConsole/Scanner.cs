@@ -55,14 +55,14 @@ namespace ScannerConsole
         {
             Console.WriteLine("Scanning: {0} by {1} ({2}/{3})", e.Name, e.Creators, e.MapNumber, e.TotalMaps);
 
-            Console.Write("Accept? [y/n]");
-            var r = Console.ReadLine().Trim().ToLower();
+            Console.Write("Accept? [y/N]");
+            var response = Console.ReadKey();
 
-            if (r == "y" || r == "yes")
+            if (response.Key == ConsoleKey.Y)
                 new MapReviewedEvent(ReviewResult.Accepted).RaiseIn(bot);
-            else if (r == "n" || r == "no")
+            else if (response.Key == ConsoleKey.N || response.Key == ConsoleKey.Enter)
                 new MapReviewedEvent(ReviewResult.Rejected).RaiseIn(bot);
-            else if (r == "s" || r == "stop")
+            else if (response.Key == ConsoleKey.S)
                 new MapReviewedEvent(ReviewResult.Stopped).RaiseIn(bot);
         }
 
