@@ -4,9 +4,16 @@ namespace MapManager
 {
     public sealed class MapManagerExtension : Extension<MapManagerExtension>
     {
-        public static void LoadInto(BotBitsClient client)
+        protected override void Initialize(BotBitsClient client, object args)
         {
-            LoadInto(client, null);
+            var dimensions = (Point)args;
+            MapManager.Of(client).MapWidth = dimensions.X;
+            MapManager.Of(client).MapHeight = dimensions.Y;
+        }
+
+        public static void LoadInto(BotBitsClient client, int width, int height)
+        {
+            LoadInto(client, new Point(width, height));
         }
     }
 }

@@ -27,7 +27,7 @@ namespace MapLoader.Readers
                     if (block.Type != ForegroundType.Text || !block.Text.ToLower().StartsWith("scan:")) continue;
                     var data = new SignData(block.Text.Substring(5).Trim(), Room.Of(BotBits).Owner);
 
-                    maps.Add(new Map(blocks, new Rectangle(x, y, MapWidth, MapHeight), data.Name, data.Creators));
+                    maps.Add(new Map(blocks, new Rectangle(x, y + 1, MapWidth, MapHeight), data.Name, data.Creators));
                 }
             }
 

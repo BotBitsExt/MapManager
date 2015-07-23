@@ -7,12 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScannerGUI", "ScannerGUI\Sc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapLoader", "MapLoader\MapLoader.csproj", "{5E8BE427-0257-43AA-9088-2A6E63E2627D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScannerConsole", "ScannerConsole\ScannerConsole.csproj", "{02B237B8-9D71-438E-81D7-0287B53CCAB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02B237B8-9D71-438E-81D7-0287B53CCAB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02B237B8-9D71-438E-81D7-0287B53CCAB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02B237B8-9D71-438E-81D7-0287B53CCAB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02B237B8-9D71-438E-81D7-0287B53CCAB7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E8BE427-0257-43AA-9088-2A6E63E2627D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E8BE427-0257-43AA-9088-2A6E63E2627D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E8BE427-0257-43AA-9088-2A6E63E2627D}.Release|Any CPU.ActiveCfg = Release|Any CPU
