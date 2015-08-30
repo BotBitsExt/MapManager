@@ -29,8 +29,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="PlayerIOClient">
+      <HintPath>..\packages\PlayerIOClient-Signed.3.2.364\lib\PlayerIOClient.dll</HintPath>
+    </Reference>
     <Reference Include="BotBits">
-      <HintPath>..\packages\BotBits.1.3.19\lib\net40\BotBits.dll</HintPath>
+      <HintPath>..\packages\BotBits.1.5.11\lib\net40\BotBits.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -46,12 +49,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MapLoader\MapLoader.csproj">
       <Project>{5E8BE427-0257-43AA-9088-2A6E63E2627D}</Project>
       <Name>MapLoader</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
