@@ -29,11 +29,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="BotBits">
-      <HintPath>..\packages\BotBits.1.5.11\lib\net40\BotBits.dll</HintPath>
-    </Reference>
     <Reference Include="PlayerIOClient">
       <HintPath>..\packages\PlayerIOClient-Signed.3.2.364\lib\PlayerIOClient.dll</HintPath>
+    </Reference>
+    <Reference Include="BotBits">
+      <HintPath>..\packages\BotBits.1.5.15\lib\net40\BotBits.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

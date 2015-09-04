@@ -70,7 +70,7 @@ namespace MapLoader
             var split = block.Text.Split(new[] {"\\n"}, StringSplitOptions.None);
             var name = split[0];
             var creators = split[2];
-            Map = new Map(blocks, new Rectangle(StartPoint, new Point(StartPoint.X + width, StartPoint.Y + height)), name, creators);
+            Map = new Map(blocks, new Rectangle(StartPoint.X, StartPoint.Y, width, height), name, creators);
         }
 
         public void AddMap(Blocks blocks, Map map)
