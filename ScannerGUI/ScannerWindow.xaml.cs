@@ -88,7 +88,6 @@ namespace ScannerGUI
         private async void ClearEmpty_Click(object sender, RoutedEventArgs e)
         {
             EnableSpecialButtons(false);
-            MapScanner.Of(client).ClearEmptySpots();
             await BlockChecker.Of(client).FinishChecksAsync();
             EnableSpecialButtons(true);
         }
@@ -96,7 +95,6 @@ namespace ScannerGUI
         private async void BuildBorders_Click(object sender, RoutedEventArgs e)
         {
             EnableSpecialButtons(false);
-            MapScanner.Of(client).BuildBorders();
             await BlockChecker.Of(client).FinishChecksAsync();
             EnableSpecialButtons(true);
         }

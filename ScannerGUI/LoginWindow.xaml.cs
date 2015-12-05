@@ -24,7 +24,7 @@ namespace ScannerGUI
             passwordBox.Password = Properties.Settings.Default.Password;
             worldIdBox.Text = Properties.Settings.Default.WorldID;
 
-            MapManagerExtension.LoadInto(client);
+            MapManagerExtension.LoadInto(client, 22, 11);
         }
 
         private async void OnLogin(object sender, RoutedEventArgs e)
