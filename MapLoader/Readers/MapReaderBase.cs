@@ -40,8 +40,8 @@ namespace MapLoader.Readers
         {
             BotBits = new BotBitsClient();
 
-            await ConnectionManager.Of(BotBits)
-                .GuestLoginAsync()
+            await Login.Of(BotBits)
+                .AsGuestAsync()
                 .CreateJoinRoomAsync(worldId);
 
             Console.WriteLine("Connected");

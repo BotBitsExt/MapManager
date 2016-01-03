@@ -31,8 +31,8 @@ namespace ScannerConsole
                 EventLoader.Of(bot).Load(this);
                 MapManagerExtension.LoadInto(bot, width, height);
 
-                ConnectionManager.Of(bot)
-                    .EmailLogin(email, password)
+                Login.Of(bot)
+                    .WithEmail(email, password)
                     .CreateJoinRoom(worldId);
             }
         }

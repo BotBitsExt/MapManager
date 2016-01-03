@@ -87,7 +87,7 @@ namespace MapLoader
                     switch (foreground[x, y].Id)
                     {
                         case Foreground.Tool.Checkpoint:
-                        case Foreground.Tool.SpawnPoint:
+                        case Foreground.Tool.Spawnpoint:
                         case Foreground.Tool.Trophy:
                         case Foreground.Hazard.Spike:
                         case Foreground.Hologram.Block:

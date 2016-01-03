@@ -48,8 +48,8 @@ namespace ScannerGUI
 
             try
             {
-                await ConnectionManager.Of(client)
-                    .EmailLoginAsync(email, password)
+                await Login.Of(client)
+                    .WithEmailAsync(email, password)
                     .CreateJoinRoomAsync(worldId);
 
                 loginButton.Content = "Connected";
