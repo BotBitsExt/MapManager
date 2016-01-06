@@ -8,24 +8,33 @@ namespace MapLoader
         {
             var lower = text.ToLower();
 
-            if (lower.Contains(" by "))
+            if (lower.StartsWith("scan:"))
             {
-                var i = lower.LastIndexOf(" by ", StringComparison.Ordinal);
+                if (lower.Contains(" by "))
+                {
+                    var i = lower.LastIndexOf(" by ", StringComparison.Ordinal);
 
-                Name = text.Substring(0, i).Trim();
-                Creators = text.Substring(i + 4).Trim();
-            }
-            else if (lower.Contains("by:"))
-            {
-                var i = lower.LastIndexOf("by:", StringComparison.Ordinal);
+                    Name = text.Substring(0, i).Trim();
+                    Creators = text.Substring(i + 4).Trim();
+                }
+                else if (lower.Contains("by:"))
+                {
+                    var i = lower.LastIndexOf("by:", StringComparison.Ordinal);
 
-                Name = text.Substring(0, i).Trim();
-                Creators = text.Substring(i + 3).Trim();
+                    Name = text.Substring(0, i).Trim();
+                    Creators = text.Substring(i + 3).Trim();
+                }
+                else
+                {
+                    Name = text;
+                    Creators = owner;
+                }
             }
             else
             {
-                Name = text;
-                Creators = owner;
+                var split = text.Split(new []{"================"}, StringSplitOptions.None);
+                Name = split[0].Trim();
+                Creators = split[1].Trim();
             }
         }
 

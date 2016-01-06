@@ -32,6 +32,10 @@
       <HintPath>..\packages\BotBits.204.1.1\lib\net40\BotBits.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=10.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PlayerIOClient, Version=2.3.6.0, Culture=neutral, PublicKeyToken=c7f7b730653f6a44, processorArchitecture=MSIL">
       <HintPath>..\packages\PlayerIOClient-Signed.3.2.369\lib\PlayerIOClient.dll</HintPath>
       <Private>True</Private>
@@ -43,9 +47,7 @@
     <Compile Include="Map.cs" />
     <Compile Include="SignData.cs" />
     <Compile Include="MapLoadException.cs" />
-    <Compile Include="Readers\MapReaderBase.cs" />
-    <Compile Include="Readers\MapScanner.cs" />
-    <Compile Include="Readers\MapReader.cs" />
+    <Compile Include="MapScanner.cs" />
     <Compile Include="MapSpot.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

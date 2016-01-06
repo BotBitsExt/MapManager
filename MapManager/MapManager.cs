@@ -5,7 +5,6 @@ using BotBits;
 using BotBits.Events;
 using MapManager.Events;
 using MapLoader;
-using MapLoader.Readers;
 
 namespace MapManager
 {
