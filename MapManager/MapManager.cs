@@ -86,7 +86,7 @@ namespace MapManager
 
             try
             {
-                maps = await new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId, signFormat);
+                maps = await new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId, new ScanSignFormat());
             }
             catch (MapLoadException ex)
             {
