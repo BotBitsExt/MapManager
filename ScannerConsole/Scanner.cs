@@ -7,13 +7,15 @@ using MapManager.Events;
 
 namespace ScannerConsole
 {
-    class Scanner
+    public class Scanner
     {
-        private BotBitsClient bot = new BotBitsClient();
+        private readonly BotBitsClient bot = new BotBitsClient();
 
-        public static void Main(string[] args)
+        public static void Main()
         {
+            // ReSharper disable once ObjectCreationAsStatement
             new Scanner();
+
             Thread.Sleep(Timeout.Infinite);
         }
 
@@ -53,23 +55,29 @@ namespace ScannerConsole
         [EventListener]
         private void OnMap(MapForReviewEvent e)
         {
-            Console.WriteLine("Scanning: {0} by {1} ({2}/{3})", e.Name, e.Creators, e.MapNumber, e.TotalMaps);
+            Console.WriteLine($"Scanning: {e.Name} by {e.Creators} ({e.MapNumber}/{e.TotalMaps})");
 
             Console.Write("Accept? [y/N]");
             var response = Console.ReadKey();
 
-            if (response.Key == ConsoleKey.Y)
-                new MapReviewedEvent(ReviewResult.Accepted).RaiseIn(bot);
-            else if (response.Key == ConsoleKey.N || response.Key == ConsoleKey.Enter)
-                new MapReviewedEvent(ReviewResult.Rejected).RaiseIn(bot);
-            else if (response.Key == ConsoleKey.S)
-                new MapReviewedEvent(ReviewResult.Stopped).RaiseIn(bot);
+            switch (response.Key)
+            {
+                case ConsoleKey.Y:
+                    new MapReviewedEvent(ReviewResult.Accepted).RaiseIn(bot);
+                    break;
+                case ConsoleKey.S:
+                    new MapReviewedEvent(ReviewResult.Stopped).RaiseIn(bot);
+                    break;
+                default:
+                    new MapReviewedEvent(ReviewResult.Rejected).RaiseIn(bot);
+                    break;
+            }
         }
 
         [EventListener]
         private void OnScanResult(ScanResultEvent e)
         {
-            Console.WriteLine("{0} ({1}/{2})", e.Message, e.AcceptedMapsCount, e.ScannedMapsCount);
+            Console.WriteLine($"{e.Message} ({e.AcceptedMapsCount}/{e.ScannedMapsCount})");
             AskForWorld();
         }
     }

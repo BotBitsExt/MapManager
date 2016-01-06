@@ -3,8 +3,8 @@
 namespace MapManager.Events
 {
     /// <summary>
-    /// Map reviewed event.
-    /// Should be fired when map has been sucessfully reviewed.
+    ///     Map reviewed event.
+    ///     Should be raised when map has been reviewed.
     /// </summary>
     public sealed class MapReviewedEvent : Event<MapReviewedEvent>
     {
@@ -14,10 +14,9 @@ namespace MapManager.Events
         }
 
         /// <summary>
-        /// Gets the result of the review.
+        ///     Gets the result of the review.
         /// </summary>
         /// <value>The result of the review.</value>
         public ReviewResult Result { get; private set; }
     }
 }
-

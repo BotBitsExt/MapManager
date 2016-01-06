@@ -3,45 +3,69 @@ using System.Linq;
 using System.Threading.Tasks;
 using BotBits;
 using BotBits.Events;
-using MapManager.Events;
+using BotBits.SendMessages;
+using JetBrains.Annotations;
 using MapLoader;
+using MapLoader.SignFormat;
+using MapManager.Events;
 
 namespace MapManager
 {
     public sealed class MapManager : EventListenerPackage<MapManager>
     {
-        /// <summary>
-        /// Gets the map spots.
-        /// </summary>
-        /// <value>The map spots.</value>
-        public List<MapSpot> MapSpots { get; private set; }
+        private readonly ISignFormat signFormat;
 
         /// <summary>
-        /// The review result.
-        /// Set when single map is reviewed.
+        ///     The review result.
+        ///     Set when single map is reviewed.
         /// </summary>
         private TaskCompletionSource<ReviewResult> reviewResult;
 
-        private bool waitingForResponse = false;
+        private bool waitingForResponse;
 
         public MapManager()
         {
             MapSpots = new List<MapSpot>();
+            signFormat = new DividerSignFormat('=', 16);
         }
 
+        /// <summary>
+        ///     Gets the map spots.
+        /// </summary>
+        /// <value>The map spots.</value>
+        [UsedImplicitly]
+        public List<MapSpot> MapSpots { get; }
+
+        [UsedImplicitly]
         public int MapWidth { get; set; }
+
+        [UsedImplicitly]
         public int MapHeight { get; set; }
+
+        /// <summary>
+        ///     Gets the empty map spots.
+        /// </summary>
+        /// <value>The empty map spots.</value>
+        [UsedImplicitly]
+        public List<MapSpot> EmptyMapSpots => MapSpots.Where(spot => !spot.HasMap).ToList();
+
+        /// <summary>
+        ///     Gets the full map spots.
+        /// </summary>
+        /// <value>The full map spots.</value>
+        [UsedImplicitly]
+        public List<MapSpot> FullMapSpots => MapSpots.Where(spot => spot.HasMap).ToList();
 
         [EventListener]
         private void OnInit(InitEvent e)
         {
             var blocks = Blocks.Of(BotBits);
 
-            var numberOfSpots = (blocks.Width / (MapWidth + 4)) * (blocks.Height / (MapHeight + 5));
+            var numberOfSpots = (blocks.Width - 2)/(MapWidth + 4)*(blocks.Height - 2)/(MapHeight + 4);
 
             for (var i = 0; i < numberOfSpots; i++)
             {
-                MapSpots.Add(new MapSpot(i, blocks, MapWidth, MapHeight));
+                MapSpots.Add(new MapSpot(i, blocks, MapWidth, MapHeight, signFormat));
             }
 
             new InitializationCompleteEvent().RaiseIn(BotBits);
@@ -62,7 +86,7 @@ namespace MapManager
 
             try
             {
-                maps = await new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId);
+                maps = await new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId, signFormat);
             }
             catch (MapLoadException ex)
             {
@@ -88,6 +112,7 @@ namespace MapManager
             {
                 spots[spotNumber].AddMap(blocks, map);
 
+                await PlaceSendMessage.Of(BotBits).FinishQueueAsync();
                 await BlockChecker.Of(BotBits).FinishChecksAsync();
 
                 reviewResult = new TaskCompletionSource<ReviewResult>();
@@ -108,7 +133,7 @@ namespace MapManager
                         if (spotNumber < spots.Count) continue;
 
                         new ScanResultEvent(false,
-                            "Scan not finished completly. Ran out of free spots.",
+                            "Scan not finished completely. Ran out of free spots.",
                             numAccepted,
                             numRejected).RaiseIn(BotBits);
                         return;
@@ -147,30 +172,14 @@ namespace MapManager
                 reviewResult.SetResult(e.Result);
         }
 
-        /// <summary>
-        /// Gets the empty map spots.
-        /// </summary>
-        /// <value>The empty map spots.</value>
-        public List<MapSpot> EmptyMapSpots
-        {
-            get { return MapSpots.Where(spot => !spot.HasMap).ToList(); }
-        }
-
-        /// <summary>
-        /// Gets the full map spots.
-        /// </summary>
-        /// <value>The full map spots.</value>
-        public List<MapSpot> FullMapSpots
-        {
-            get { return MapSpots.Where(spot => spot.HasMap).ToList(); }
-        }
-
+        [UsedImplicitly]
         public void ClearEmptySpots()
         {
             foreach (var spot in EmptyMapSpots)
                 spot.Clear(Blocks.Of(BotBits));
         }
 
+        [UsedImplicitly]
         public void BuildBorders()
         {
             foreach (var spot in MapSpots)
@@ -178,4 +187,3 @@ namespace MapManager
         }
     }
 }
-

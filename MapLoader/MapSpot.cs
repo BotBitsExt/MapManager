@@ -133,6 +133,11 @@ namespace MapLoader
             {
                 for (var x = 0; x < Width + 4; x++)
                 {
+                    // Do not remove map sign
+                    if (x == 1 && y == 1 &&
+                        blocks.At(startX + x, startY + y).Foreground.Block.Id == Foreground.Sign.Block)
+                        continue;
+
                     if (x == 0 || x == Width - 1 || y == 0 || y == Height - 1)
                     {
                         placeBlock(x, y, Foreground.Gravity.InvisibleDot);

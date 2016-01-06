@@ -3,8 +3,8 @@
 namespace MapManager.Events
 {
     /// <summary>
-    /// Initialization complete event.
-    /// Fired when bot connects to the database world and finishes loading of map spots.
+    ///     Initialization complete event.
+    ///     Raised when bot connects to the database world and finishes loading of map spots.
     /// </summary>
     public sealed class InitializationCompleteEvent : Event<InitializationCompleteEvent>
     {
@@ -13,4 +13,3 @@ namespace MapManager.Events
         }
     }
 }
-
