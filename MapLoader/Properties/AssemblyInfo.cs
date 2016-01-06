@@ -1,15 +1,14 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
 [assembly: AssemblyTitle("MapLoader")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("BotBits map loader")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Thanel")]
+[assembly: AssemblyCompany("Tunous")]
+[assembly: AssemblyProduct("MapLoader")]
+[assembly: AssemblyCopyright("Tunous")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,4 +23,3 @@ using System.Runtime.CompilerServices;
 
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
-
