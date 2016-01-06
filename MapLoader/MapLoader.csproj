@@ -43,12 +43,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SignFormat\DividerSignFormat.cs" />
+    <Compile Include="SignFormat\ISignFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Map.cs" />
-    <Compile Include="SignData.cs" />
+    <Compile Include="MapData.cs" />
     <Compile Include="MapLoadException.cs" />
     <Compile Include="MapScanner.cs" />
     <Compile Include="MapSpot.cs" />
+    <Compile Include="SignFormat\ScanSignFormat.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />

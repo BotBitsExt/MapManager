@@ -1,6 +1,7 @@
 ﻿using System;
 using BotBits;
 using JetBrains.Annotations;
+using MapLoader.SignFormat;
 
 namespace MapLoader
 {
@@ -9,7 +10,7 @@ namespace MapLoader
     /// </summary>
     public class MapSpot
     {
-        public MapSpot(int id, Blocks blocks, int width, int height)
+        public MapSpot(int id, Blocks blocks, int width, int height, ISignFormat signFormat)
         {
             Id = id;
             Width = width;
@@ -25,11 +26,13 @@ namespace MapLoader
             MapPoint = new Point(x + 3, y + 3);
 
             var block = blocks.At(SignPoint).Foreground.Block;
-            if (block.Type != ForegroundType.Text) return;
-            var split = block.Text.Split(new[] {"\\n"}, StringSplitOptions.None);
-            var name = split[0];
-            var creators = split[2];
-            Map = new Map(blocks, new Rectangle(MapPoint.X, MapPoint.Y, Width, Height), name, creators);
+            if (block.Type != ForegroundType.Text)
+                return;
+
+            MapData mapData;
+            if (!signFormat.TryGetMapData(block.Text, "", out mapData))
+                return;
+            Map = new Map(blocks, new Rectangle(MapPoint.X, MapPoint.Y, Width, Height), mapData.Name, mapData.Creators);
         }
 
         /// <summary>

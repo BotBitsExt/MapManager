@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BotBits;
 using BotBits.Events;
 using JetBrains.Annotations;
+using MapLoader.SignFormat;
 
 namespace MapLoader
 {
@@ -22,7 +23,7 @@ namespace MapLoader
         private int MapWidth { get; }
         private int MapHeight { get; }
 
-        private List<Map> OnLoadMaps(BotBitsClient botBits)
+        private List<Map> OnLoadMaps(BotBitsClient botBits, ISignFormat signFormat)
         {
             var maps = new List<Map>();
             var blocks = Blocks.Of(botBits);
@@ -33,11 +34,14 @@ namespace MapLoader
                 {
                     var block = blocks.At(x, y).Foreground.Block;
 
-                    if (block.Type != ForegroundType.Text ||
-                        !block.Text.ToLower().StartsWith("scan:") && !block.Text.Contains("================")) continue;
-                    var data = new SignData(block.Text, Room.Of(botBits).Owner);
+                    if (block.Type != ForegroundType.Text)
+                        continue;
 
-                    maps.Add(new Map(blocks, new Rectangle(x, y + 1, MapWidth, MapHeight), data.Name, data.Creators));
+                    MapData mapData;
+                    if (!signFormat.TryGetMapData(block.Text, Room.Of(botBits).Owner, out mapData))
+                        continue;
+
+                    maps.Add(new Map(blocks, new Rectangle(x, y + 1, MapWidth, MapHeight), mapData.Name, mapData.Creators));
                 }
             }
 
@@ -45,11 +49,12 @@ namespace MapLoader
         }
 
         /// <summary>
-        ///     Asynchronously load the maps from world with the specified <see cref="worldId"/>.
+        ///     Asynchronously loads maps from world with the specified <see cref="worldId"/>.
         /// </summary>
         /// <param name="worldId">World identifier.</param>
+        /// <param name="signFormat"><see cref="MapData"/> reader.</param>
         /// <returns>The loaded maps.</returns>
-        public async Task<List<Map>> LoadMapsAsync(string worldId)
+        public async Task<List<Map>> LoadMapsAsync(string worldId, ISignFormat signFormat)
         {
             var botBits = new BotBitsClient();
 
@@ -70,7 +75,7 @@ namespace MapLoader
             await connectResult.Task;
             cts.Cancel();
 
-            var maps = OnLoadMaps(botBits);
+            var maps = OnLoadMaps(botBits, signFormat);
 
             botBits.Dispose();
 
@@ -78,17 +83,18 @@ namespace MapLoader
         }
 
         /// <summary>
-        ///     Loads the maps from world with the specified <see cref="worldId" />.
+        ///     Loads maps from world with the specified <see cref="worldId" />.
         /// </summary>
         /// <param name="worldId">World identifier.</param>
+        /// <param name="signFormat"><see cref="MapData"/> reader.</param>
         /// <returns>The loaded maps.</returns>
         [UsedImplicitly]
-        public List<Map> LoadMaps(string worldId)
+        public List<Map> LoadMaps(string worldId, ISignFormat signFormat)
         {
-            return LoadMapsAsync(worldId).Result;
+            return LoadMapsAsync(worldId, signFormat).Result;
         }
 
-        private async void WaitForInitEvent(BotBitsClient botBits, TaskCompletionSource<bool> result,
+        private static async void WaitForInitEvent(BotBitsClient botBits, TaskCompletionSource<bool> result,
             CancellationToken token)
         {
             try
@@ -101,7 +107,7 @@ namespace MapLoader
             }
         }
 
-        private async void WaitForInfoEvent(BotBitsClient botBits, TaskCompletionSource<bool> result,
+        private static async void WaitForInfoEvent(BotBitsClient botBits, TaskCompletionSource<bool> result,
             CancellationToken token)
         {
             try
