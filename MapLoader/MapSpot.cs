@@ -127,7 +127,11 @@ namespace MapLoader
             var startY = MapPoint.Y - 2;
 
             Action<int, int, Foreground.Id> placeBlock
-                = (x, y, block) => blocks.Place(startX + x, startY + y, block);
+                = (x, y, block) =>
+                {
+                    blocks.Place(startX + x, startY + y, block);
+                    blocks.Place(startX + x, startY + y, Background.Empty);
+                };
 
             for (var y = 0; y < Height + 4; y++)
             {
@@ -138,11 +142,11 @@ namespace MapLoader
                         blocks.At(startX + x, startY + y).Foreground.Block.Id == Foreground.Sign.Block)
                         continue;
 
-                    if (x == 0 || x == Width - 1 || y == 0 || y == Height - 1)
+                    if (x == 0 || x == Width + 3 || y == 0 || y == Height + 3)
                     {
                         placeBlock(x, y, Foreground.Gravity.InvisibleDot);
                     }
-                    else if (x == 1 || x == Width - 2 || y == 1 || y == Height - 2)
+                    else if (x == 1 || x == Width + 2 || y == 1 || y == Height + 2)
                     {
                         placeBlock(x, y, Foreground.Basic.Black);
                     }

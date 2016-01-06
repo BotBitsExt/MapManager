@@ -32,7 +32,7 @@ namespace MapLoader.SignFormat
             this.dividerLength = dividerLength;
         }
 
-        private string Divider => new string(dividerChar, dividerLength);
+        private string Divider => "\\n" + new string(dividerChar, dividerLength) + "\\n";
 
         public bool TryGetMapData(string signText, string worldOwner, out MapData mapData)
         {
@@ -44,7 +44,7 @@ namespace MapLoader.SignFormat
 
             var split = signText.Split(new[] {Divider}, StringSplitOptions.None);
             mapData = new MapData(split[0].Trim(), split[1].Trim());
-            return false;
+            return true;
         }
     }
 }

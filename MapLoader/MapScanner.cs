@@ -41,7 +41,7 @@ namespace MapLoader
                     if (!signFormat.TryGetMapData(block.Text, Room.Of(botBits).Owner, out mapData))
                         continue;
 
-                    maps.Add(new Map(blocks, new Rectangle(x, y + 1, MapWidth, MapHeight), mapData.Name, mapData.Creators));
+                    maps.Add(new Map(blocks, new Rectangle(x + 1, y + 1, MapWidth, MapHeight), mapData.Name, mapData.Creators));
                 }
             }
 
