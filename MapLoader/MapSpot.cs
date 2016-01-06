@@ -1,87 +1,103 @@
 ﻿using System;
 using BotBits;
+using JetBrains.Annotations;
 
 namespace MapLoader
 {
     /// <summary>
-    /// Spot for the map design.
+    ///     Spot for the map design.
     /// </summary>
     public class MapSpot
     {
-        /// <summary>
-        /// Gets the spot identifier.
-        /// </summary>
-        /// <value>The spot identifier.</value>
-        public int Id { get; private set; }
-
-        /// <summary>
-        /// Gets the start point.
-        /// </summary>
-        /// <value>The start point.</value>
-        public Point StartPoint { get; private set; }
-
-        /// <summary>
-        /// Gets the position of the sign containing map information.
-        /// </summary>
-        /// <value>The sign point.</value>
-        public Point SignPoint { get; private set; }
-
-        /// <summary>
-        /// Gets the map located in this spot.
-        /// </summary>
-        /// <value>The map.</value>
-        public Map Map { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether this spot contains map.
-        /// </summary>
-        /// <value><c>true</c> if this spot contains map; otherwise, <c>false</c>.</value>
-        public bool HasMap
-        {
-            get { return Map != null; }
-        }
-
-        /// <summary>
-        /// Gets the width.
-        /// </summary>
-        /// <value>The width.</value>
-        public int Width { get; private set; }
-
-        /// <summary>
-        /// Gets the height.
-        /// </summary>
-        /// <value>The height.</value>
-        public int Height { get; private set; }
-
         public MapSpot(int id, Blocks blocks, int width, int height)
         {
             Id = id;
             Width = width;
             Height = height;
 
-            var maxId = blocks.Width / (width + 4);
-            var x = (width + 4) * (id % maxId);
-            var y = (height + 5) * (id / maxId);
-            StartPoint = new Point(x + 4, y + 5);
-            SignPoint = new Point(x + ((width + 4) / 2), y + 3);
+            var spotWidth = Width + 4;
+            var spotHeight = Height + 4;
+            var mapsInRow = (blocks.Width - 2)/spotWidth;
+            var x = spotWidth*(id%mapsInRow);
+            var y = spotHeight*(id/mapsInRow);
+
+            SignPoint = new Point(x + 2, y + 2);
+            MapPoint = new Point(x + 3, y + 3);
 
             var block = blocks.At(SignPoint).Foreground.Block;
             if (block.Type != ForegroundType.Text) return;
             var split = block.Text.Split(new[] {"\\n"}, StringSplitOptions.None);
             var name = split[0];
             var creators = split[2];
-            Map = new Map(blocks, new Rectangle(StartPoint.X, StartPoint.Y, width, height), name, creators);
+            Map = new Map(blocks, new Rectangle(MapPoint.X, MapPoint.Y, Width, Height), name, creators);
         }
 
+        /// <summary>
+        ///     Gets the spot identifier.
+        /// </summary>
+        /// <value>The spot identifier.</value>
+        [UsedImplicitly]
+        public int Id { get; }
+
+        /// <summary>
+        ///     Gets the point at which map is getting built.
+        /// </summary>
+        /// <value>The map point.</value>
+        [UsedImplicitly]
+        public Point MapPoint { get; }
+
+        /// <summary>
+        ///     Gets the position of the sign containing map information.
+        /// </summary>
+        /// <value>The sign point.</value>
+        [UsedImplicitly]
+        public Point SignPoint { get; }
+
+        /// <summary>
+        ///     Gets the map located in this spot.
+        /// </summary>
+        /// <value>The map.</value>
+        [UsedImplicitly]
+        public Map Map { get; private set; }
+
+        /// <summary>
+        ///     Gets a value indicating whether this spot contains a map.
+        /// </summary>
+        /// <value><c>true</c> if this spot contains a map; otherwise, <c>false</c>.</value>
+        public bool HasMap => Map != null;
+
+        /// <summary>
+        ///     Gets the width of the map.
+        /// </summary>
+        /// <value>The width.</value>
+        [UsedImplicitly]
+        public int Width { get; }
+
+        /// <summary>
+        ///     Gets the height of the map.
+        /// </summary>
+        /// <value>The height.</value>
+        [UsedImplicitly]
+        public int Height { get; }
+
+        /// <summary>
+        ///     Adds the map.
+        /// </summary>
+        /// <param name="blocks">The blocks.</param>
+        /// <param name="map">The map.</param>
         public void AddMap(Blocks blocks, Map map)
         {
             Map = map;
 
-            map.BuildAt(blocks, StartPoint);
-            var text = string.Format("{0}\\n================\\n{1}", map.Name, map.Creators);
+            map.BuildAt(blocks, MapPoint);
+            var text = $"{map.Name}\\n================\\n{map.Creators}";
             blocks.Place(SignPoint.X, SignPoint.Y, Foreground.Sign.Block, text);
         }
 
+        /// <summary>
+        ///     Clears the spot.
+        /// </summary>
+        /// <param name="blocks">The blocks.</param>
         public void Clear(Blocks blocks)
         {
             Map = null;
@@ -90,52 +106,40 @@ namespace MapLoader
             {
                 for (var y = 0; y < Height; y++)
                 {
-                    blocks.Place(StartPoint.X + x, StartPoint.Y + y, Background.Empty);
-                    blocks.Place(StartPoint.X + x, StartPoint.Y + y, Foreground.Empty);
+                    blocks.Place(MapPoint.X + x, MapPoint.Y + y, Background.Empty);
+                    blocks.Place(MapPoint.X + x, MapPoint.Y + y, Foreground.Empty);
                 }
             }
 
-            blocks.Place(SignPoint.X, SignPoint.Y, Foreground.Empty);
+            blocks.Place(SignPoint.X, SignPoint.Y, Foreground.Basic.Black);
         }
 
+        /// <summary>
+        ///     Builds the border.
+        /// </summary>
+        /// <param name="blocks">The blocks.</param>
         public void BuildBorder(Blocks blocks)
         {
-            var startX = StartPoint.X - 2;
-            var startY = StartPoint.Y - 4;
+            var startX = MapPoint.X - 2;
+            var startY = MapPoint.Y - 2;
 
             Action<int, int, Foreground.Id> placeBlock
                 = (x, y, block) => blocks.Place(startX + x, startY + y, block);
 
-            for (var y = 0; y < (Height + 5); y++)
+            for (var y = 0; y < Height + 4; y++)
             {
-                for (var x = 0; x < (Width + 4); x++)
+                for (var x = 0; x < Width + 4; x++)
                 {
-                    if (y == 0 || y == 1)
+                    if (x == 0 || x == Width - 1 || y == 0 || y == Height - 1)
                     {
                         placeBlock(x, y, Foreground.Gravity.InvisibleDot);
                     }
-                    else if (y == 2)
+                    else if (x == 1 || x == Width - 2 || y == 1 || y == Height - 2)
                     {
-                        if (x < 2 || x > Width + 2)
-                            placeBlock(x, y, Foreground.Gravity.InvisibleDot);
-                    }
-                    else if (y == 3 || y == Height + 4)
-                    {
-                        if (x == 0 || x == Width + 3)
-                            placeBlock(x, y, Foreground.Gravity.InvisibleDot);
-                        else
-                            placeBlock(x, y, Foreground.Basic.Black);
-                    }
-                    else if (y > 3 && y < Height + 4)
-                    {
-                        if (x == 0 || x == Width + 3)
-                            placeBlock(x, y, Foreground.Gravity.InvisibleDot);
-                        else if (x == 1 || x == Width + 2)
-                            placeBlock(x, y, Foreground.Basic.Black);
+                        placeBlock(x, y, Foreground.Basic.Black);
                     }
                 }
             }
         }
     }
 }
-
