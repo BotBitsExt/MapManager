@@ -13,8 +13,6 @@ namespace MapManager
 {
     public sealed class MapManager : EventListenerPackage<MapManager>
     {
-        private readonly ISignFormat signFormat;
-
         /// <summary>
         ///     The review result.
         ///     Set when single map is reviewed.
@@ -26,7 +24,9 @@ namespace MapManager
         public MapManager()
         {
             MapSpots = new List<MapSpot>();
-            signFormat = new DividerSignFormat('=', 16);
+            MapSpotSignFormat = new DividerSignFormat('=', 16);
+            ScanSignFormat = new ScanSignFormat();
+            MapPositionMapper = new DefaultPositionMapper();
         }
 
         /// <summary>
@@ -41,6 +41,35 @@ namespace MapManager
 
         [UsedImplicitly]
         public int MapHeight { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the fromat for the signs inside of the maps
+        ///     database world.
+        /// </summary>
+        /// <value>
+        ///     The map spot sign format.
+        /// </value>
+        [UsedImplicitly]
+        public ISignFormat MapSpotSignFormat { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the format for the signs inside of the worlds from
+        ///     which maps will be scanned.
+        /// </summary>
+        /// <value>
+        ///     The scan sign format.
+        /// </value>
+        [UsedImplicitly]
+        public ISignFormat ScanSignFormat { get; set; }
+
+        /// <summary>
+        ///     Gets or sets the map position mapper.
+        /// </summary>
+        /// <value>
+        ///     The map position mapper.
+        /// </value>
+        [UsedImplicitly]
+        public IPositionMapper MapPositionMapper { get; set; }
 
         /// <summary>
         ///     Gets the empty map spots.
@@ -61,11 +90,11 @@ namespace MapManager
         {
             var blocks = Blocks.Of(BotBits);
 
-            var numberOfSpots = (blocks.Width - 2)/(MapWidth + 4)*(blocks.Height - 2)/(MapHeight + 4);
+            var numberOfSpots = (blocks.Width - 2) / (MapWidth + 4) * (blocks.Height - 2) / (MapHeight + 4);
 
             for (var i = 0; i < numberOfSpots; i++)
             {
-                MapSpots.Add(new MapSpot(i, blocks, MapWidth, MapHeight, signFormat));
+                MapSpots.Add(new MapSpot(i, blocks, MapWidth, MapHeight, MapSpotSignFormat));
             }
 
             new InitializationCompleteEvent().RaiseIn(BotBits);
@@ -86,7 +115,10 @@ namespace MapManager
 
             try
             {
-                maps = await new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId, new ScanSignFormat());
+                maps =
+                    await
+                        new MapScanner(MapWidth, MapHeight).LoadMapsAsync(e.TargetWorldId, ScanSignFormat,
+                            MapPositionMapper);
             }
             catch (MapLoadException ex)
             {

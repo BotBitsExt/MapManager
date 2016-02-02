@@ -43,6 +43,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PositionMapper\DefaultPositionMapper.cs" />
+    <Compile Include="PositionMapper\IPositionMapper.cs" />
     <Compile Include="SignFormat\DividerSignFormat.cs" />
     <Compile Include="SignFormat\ISignFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

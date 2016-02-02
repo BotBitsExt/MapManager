@@ -23,7 +23,7 @@ namespace MapLoader
         private int MapWidth { get; }
         private int MapHeight { get; }
 
-        private List<Map> OnLoadMaps(BotBitsClient botBits, ISignFormat signFormat)
+        private List<Map> OnLoadMaps(BotBitsClient botBits, ISignFormat signFormat, IPositionMapper positionMapper)
         {
             var maps = new List<Map>();
             var blocks = Blocks.Of(botBits);
@@ -41,7 +41,8 @@ namespace MapLoader
                     if (!signFormat.TryGetMapData(block.Text, Room.Of(botBits).Owner, out mapData))
                         continue;
 
-                    maps.Add(new Map(blocks, new Rectangle(x + 1, y + 1, MapWidth, MapHeight), mapData.Name, mapData.Creators));
+                    maps.Add(new Map(blocks, positionMapper.GetMapRectangle(new Point(x, y), MapWidth, MapHeight),
+                        mapData.Name, mapData.Creators));
                 }
             }
 
@@ -49,12 +50,13 @@ namespace MapLoader
         }
 
         /// <summary>
-        ///     Asynchronously loads maps from world with the specified <see cref="worldId"/>.
+        ///     Asynchronously loads maps from world with the specified <see cref="worldId" />.
         /// </summary>
         /// <param name="worldId">World identifier.</param>
-        /// <param name="signFormat"><see cref="MapData"/> reader.</param>
+        /// <param name="signFormat"><see cref="MapData" /> reader.</param>
+        /// <param name="positionMapper">The position mapper used to get map rectangle.</param>
         /// <returns>The loaded maps.</returns>
-        public async Task<List<Map>> LoadMapsAsync(string worldId, ISignFormat signFormat)
+        public async Task<List<Map>> LoadMapsAsync(string worldId, ISignFormat signFormat, IPositionMapper positionMapper)
         {
             var botBits = new BotBitsClient();
 
@@ -75,7 +77,7 @@ namespace MapLoader
             await connectResult.Task;
             cts.Cancel();
 
-            var maps = OnLoadMaps(botBits, signFormat);
+            var maps = OnLoadMaps(botBits, signFormat, positionMapper);
 
             botBits.Dispose();
 
@@ -86,12 +88,13 @@ namespace MapLoader
         ///     Loads maps from world with the specified <see cref="worldId" />.
         /// </summary>
         /// <param name="worldId">World identifier.</param>
-        /// <param name="signFormat"><see cref="MapData"/> reader.</param>
+        /// <param name="signFormat"><see cref="MapData" /> reader.</param>
+        /// <param name="positionMapper">The position mapper used to get map rectangle.</param>
         /// <returns>The loaded maps.</returns>
         [UsedImplicitly]
-        public List<Map> LoadMaps(string worldId, ISignFormat signFormat)
+        public List<Map> LoadMaps(string worldId, ISignFormat signFormat, IPositionMapper positionMapper)
         {
-            return LoadMapsAsync(worldId, signFormat).Result;
+            return LoadMapsAsync(worldId, signFormat, positionMapper).Result;
         }
 
         private static async void WaitForInitEvent(BotBitsClient botBits, TaskCompletionSource<bool> result,
