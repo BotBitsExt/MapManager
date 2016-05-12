@@ -34,7 +34,7 @@ namespace MapLoader
                 {
                     var block = blocks.At(x, y).Foreground.Block;
 
-                    if (block.Type != ForegroundType.Label)
+                    if (block.Type != ForegroundType.Sign)
                         continue;
 
                     MapData mapData;
@@ -60,10 +60,7 @@ namespace MapLoader
         {
             var botBits = new BotBitsClient();
 
-            await Login.Of(botBits)
-                .AsGuestAsync()
-                .CreateJoinRoomAsync(worldId);
-
+            await Login.Of(botBits).AsGuestAsync().CreateJoinRoomAsync(worldId);
             Console.WriteLine("Connected");
 
             var connectResult = new TaskCompletionSource<bool>();

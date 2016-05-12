@@ -26,7 +26,7 @@ namespace MapLoader
             MapPoint = new Point(x + 3, y + 3);
 
             var block = blocks.At(SignPoint).Foreground.Block;
-            if (block.Type != ForegroundType.Label)
+            if (block.Type != ForegroundType.Sign)
                 return;
 
             MapData mapData;
