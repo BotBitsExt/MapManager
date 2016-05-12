@@ -1,16 +1,14 @@
 ﻿using System.Windows;
 using PlayerIOClient;
 using BotBits;
-using BotBits.Events;
 using MapManager;
-using MapManager.Events;
 
 namespace ScannerGUI
 {
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    public partial class LoginWindow : Window
+    public partial class LoginWindow
     {
         private BotBitsClient client;
 

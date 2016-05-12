@@ -34,7 +34,7 @@ namespace MapLoader
                 {
                     var block = blocks.At(x, y).Foreground.Block;
 
-                    if (block.Type != ForegroundType.Text)
+                    if (block.Type != ForegroundType.Label)
                         continue;
 
                     MapData mapData;
