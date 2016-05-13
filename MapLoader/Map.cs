@@ -1,4 +1,5 @@
-﻿using BotBits;
+﻿using System;
+using BotBits;
 using JetBrains.Annotations;
 
 namespace MapLoader
@@ -60,12 +61,18 @@ namespace MapLoader
         /// </summary>
         /// <param name="blocks">Blocks.</param>
         /// <param name="target">Target.</param>
-        public void BuildAt(Blocks blocks, Point target)
+        /// <param name="uploadValidator">
+        ///     Block uploading validator. Every time when it returns <code>false</code> no map block is
+        ///     uploaded at the resulting position.
+        /// </param>
+        public void BuildAt(Blocks blocks, Point target, Func<BlocksItem, bool> uploadValidator = null)
         {
             for (var x = 0; x < Area.Width; x++)
             {
                 for (var y = 0; y < Area.Height; y++)
                 {
+                    if (uploadValidator != null && !uploadValidator(blocks.At(x, y))) continue;
+
                     blocks.Place(target.X + x, target.Y + y, background[x, y]);
                     blocks.Place(target.X + x, target.Y + y, foreground[x, y]);
                 }
