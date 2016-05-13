@@ -71,7 +71,7 @@ namespace MapLoader
             {
                 for (var y = 0; y < Area.Height; y++)
                 {
-                    if (uploadValidator != null && !uploadValidator(blocks.At(x, y))) continue;
+                    if (uploadValidator != null && !uploadValidator(blocks.At(target.X + x, target.Y + y))) continue;
 
                     blocks.Place(target.X + x, target.Y + y, background[x, y]);
                     blocks.Place(target.X + x, target.Y + y, foreground[x, y]);
